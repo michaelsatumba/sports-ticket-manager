@@ -51,7 +51,9 @@ export default function Home() {
 	]);
 	const [sampleData, setSampleData] = useState([]);
 	const [sampleLinks, setSampleLinks] = useState([]);
-	const [sampleEvents, setSampleEvents] = useState([]);
+	const [sampleAverage, setSampleAverage] = useState([]);
+	const [sampleHighest, setSampleHighest] = useState([]);
+
 	const [options, setOptions] = useState({
 		responsive: true,
 		plugins: {
@@ -62,26 +64,71 @@ export default function Home() {
 						return '$';
 					} as (tooltipItem: { dataIndex: number }, data: any) => string,
 				},
+				titleFont: {
+					size: 20,
+				},
+				bodyFont: {
+					size: 20,
+				},
 			},
 			legend: {
 				position: 'top' as const,
+				labels: {
+					font: {
+						size: 20,
+					},
+				},
 			},
 			title: {
 				display: true,
 				text: 'NBA Games in ' + city + ' on or after ' + startDate,
+				font: {
+					size: 20,
+				},
+			},
+		},
+		scales: {
+			x: {
+				ticks: {
+					font: {
+						size: 40,
+					},
+				},
+			},
+			y: {
+				ticks: {
+					font: {
+						size: 20,
+					},
+					callback: function (value: any) {
+						return '$' + value;
+					},
+				},
 			},
 		},
 	});
-
-	// const options = ;
 
 	const dataOne = {
 		labels,
 		datasets: [
 			{
-				label: 'Lowest ',
+				label: 'Lowest Price ',
 				data: sampleData,
 				backgroundColor: 'rgba(255, 99, 132, 0.5)',
+				barThickness: 80,
+				links: sampleLinks,
+			},
+			{
+				label: 'Average Price ',
+				data: sampleAverage,
+				backgroundColor: 'rgba(54, 162, 235, 0.5)',
+				barThickness: 80,
+				links: sampleLinks,
+			},
+			{
+				label: 'Highest Price ',
+				data: sampleHighest,
+				backgroundColor: 'rgba(255, 206, 86, 0.5)',
 				barThickness: 80,
 				links: sampleLinks,
 			},
@@ -96,6 +143,7 @@ export default function Home() {
 		);
 		const data = await response.json();
 		const events = data.events;
+		console.log(events);
 		setOptions({
 			responsive: true,
 			plugins: {
@@ -113,13 +161,47 @@ export default function Home() {
 							return '';
 						} as (tooltipItem: { dataIndex: number }, data: any) => string,
 					},
+					titleFont: {
+						size: 30,
+					},
+					bodyFont: {
+						size: 20,
+					},
 				},
+
 				legend: {
 					position: 'top' as const,
+					labels: {
+						font: {
+							size: 20,
+						},
+					},
 				},
 				title: {
 					display: true,
 					text: 'NBA Games in ' + city + ' on or after ' + startDate,
+					font: {
+						size: 20,
+					},
+				},
+			},
+			scales: {
+				x: {
+					ticks: {
+						font: {
+							size: 20,
+						},
+					},
+				},
+				y: {
+					ticks: {
+						font: {
+							size: 20,
+						},
+						callback: function (value: any) {
+							return '$' + value;
+						},
+					},
 				},
 			},
 		});
@@ -135,6 +217,20 @@ export default function Home() {
 		);
 
 		setSampleData(lowest_prices);
+
+		const average_prices = data.events.map(
+			(event: { stats: { average_price: any } }) => event.stats.average_price
+		);
+
+		console.log(average_prices);
+		setSampleAverage(average_prices);
+
+		const highest_prices = data.events.map(
+			(event: { stats: { highest_price: any } }) => event.stats.highest_price
+		);
+
+		console.log(highest_prices);
+		setSampleHighest(highest_prices);
 
 		const linksForGame = data.events.map((event: { url: any }) => event.url);
 
@@ -201,10 +297,10 @@ export default function Home() {
 		</>
 	);
 }
-// ! ADD CHART
-// ! ADD Links
+// ? ADD CHART
+// ? ADD Links
+// ? ADD Titles
+// ? ADD Highest Prices
 
-// ! ADD Titles
-// ! ADD Highest Prices
 // ! ADD OTHER SPORTS
 // ! ADD OTHER CHARTS
