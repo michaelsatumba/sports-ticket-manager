@@ -309,14 +309,7 @@ export default function Home() {
 				</button>
 			</form>
 
-			<div className="">
-				<Bar
-					options={options}
-					data={dataOne}
-					onClick={onClick}
-					ref={chartRef}
-				/>
-			</div>
+			<Bar options={options} data={dataOne} onClick={onClick} ref={chartRef} />
 		</>
 	);
 }
