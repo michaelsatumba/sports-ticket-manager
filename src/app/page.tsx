@@ -64,9 +64,13 @@ export default function Home() {
 					Get Events
 				</button>
 			</form>
-			<div className="wrapper h-64 mx-auto">
+
+			{/* <div className="wrapper h-64 mx-auto">
 				<canvas id="myChart" className="text-5xl"></canvas>
-			</div>
+			</div> */}
 		</>
 	);
 }
+// ! ADD CHART
+// ! ADD OTHER SPORTS
+// ! ADD OTHER CHARTS
