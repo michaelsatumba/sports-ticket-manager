@@ -51,10 +51,18 @@ export default function Home() {
 	]);
 	const [sampleData, setSampleData] = useState([]);
 	const [sampleLinks, setSampleLinks] = useState([]);
-
-	const options = {
+	const [sampleEvents, setSampleEvents] = useState([]);
+	const [options, setOptions] = useState({
 		responsive: true,
 		plugins: {
+			tooltip: {
+				enabled: true,
+				callbacks: {
+					label: function (tooltipItem: { dataIndex: number }, data: any) {
+						return '$';
+					} as (tooltipItem: { dataIndex: number }, data: any) => string,
+				},
+			},
 			legend: {
 				position: 'top' as const,
 			},
@@ -63,7 +71,9 @@ export default function Home() {
 				text: 'NBA Games in ' + city + ' on or after ' + startDate,
 			},
 		},
-	};
+	});
+
+	// const options = ;
 
 	const dataOne = {
 		labels,
@@ -85,6 +95,34 @@ export default function Home() {
 			`https://api.seatgeek.com/2/events?taxonomies.name=nba&venue.city=${city}&datetime_utc.gt=${startDate}&client_id=${process.env.CLIENT_ID}`
 		);
 		const data = await response.json();
+		const events = data.events;
+		setOptions({
+			responsive: true,
+			plugins: {
+				tooltip: {
+					enabled: true,
+					callbacks: {
+						label: function (tooltipItem: { dataIndex: number }, data: any) {
+							if (tooltipItem.dataIndex !== undefined) {
+								return (
+									events[tooltipItem.dataIndex].short_title +
+									' $' +
+									events[tooltipItem.dataIndex].stats.lowest_price
+								);
+							}
+							return '';
+						} as (tooltipItem: { dataIndex: number }, data: any) => string,
+					},
+				},
+				legend: {
+					position: 'top' as const,
+				},
+				title: {
+					display: true,
+					text: 'NBA Games in ' + city + ' on or after ' + startDate,
+				},
+			},
+		});
 
 		const dates = data.events.map((event: { datetime_local: any }) =>
 			new Date(event.datetime_local).toLocaleDateString()
@@ -107,7 +145,6 @@ export default function Home() {
 
 	const onClick = (event: MouseEvent<HTMLCanvasElement>) => {
 		if (chartRef.current) {
-			console.log(getElementAtEvent(chartRef.current, event)[0]);
 			const datasetIndexNum = getElementAtEvent(chartRef.current, event)[0]
 				.datasetIndex;
 			const dataPoint = getElementAtEvent(chartRef.current, event)[0].index;
@@ -167,6 +204,7 @@ export default function Home() {
 // ! ADD CHART
 // ! ADD Links
 
+// ! ADD Titles
 // ! ADD Highest Prices
 // ! ADD OTHER SPORTS
 // ! ADD OTHER CHARTS
