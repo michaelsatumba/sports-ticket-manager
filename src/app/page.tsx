@@ -2,22 +2,117 @@
 import Image from 'next/image';
 import { Inter } from '@next/font/google';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import {
+	useEffect,
+	useRef,
+	useState,
+	MouseEvent,
+	MouseEventHandler,
+} from 'react';
+import {
+	Chart as ChartJS,
+	CategoryScale,
+	LinearScale,
+	BarElement,
+	Title,
+	Tooltip,
+	Legend,
+	InteractionItem,
+} from 'chart.js';
+import {
+	Bar,
+	getDatasetAtEvent,
+	getElementAtEvent,
+	getElementsAtEvent,
+} from 'react-chartjs-2';
+
+ChartJS.register(
+	CategoryScale,
+	LinearScale,
+	BarElement,
+	Title,
+	Tooltip,
+	Legend
+);
 
 const inter = Inter({ subsets: ['latin'] });
 
 export default function Home() {
 	const [city, setCity] = useState('');
 	const [startDate, setStartDate] = useState('');
-	const CLIENT_ID = process.env.CLIENT_ID;
+	const [labels, setLabels] = useState([
+		'January',
+		'February',
+		'March',
+		'April',
+		'May',
+		'June',
+		'July',
+	]);
+	const [sampleData, setSampleData] = useState([]);
+	const [sampleLinks, setSampleLinks] = useState([]);
+
+	const options = {
+		responsive: true,
+		plugins: {
+			legend: {
+				position: 'top' as const,
+			},
+			title: {
+				display: true,
+				text: 'NBA Games in ' + city + ' on or after ' + startDate,
+			},
+		},
+	};
+
+	const dataOne = {
+		labels,
+		datasets: [
+			{
+				label: 'Lowest ',
+				data: sampleData,
+				backgroundColor: 'rgba(255, 99, 132, 0.5)',
+				barThickness: 80,
+				links: sampleLinks,
+			},
+		],
+	};
 
 	const handleSubmit = async (event: { preventDefault: () => void }) => {
 		event.preventDefault();
-		// console.log(city, startDate);
+
 		const response = await fetch(
-			`https://api.seatgeek.com/2/events?taxonomies.name=nba&venue.city=${city}&datetime_utc.gt=${startDate}&client_id=${CLIENT_ID}`
+			`https://api.seatgeek.com/2/events?taxonomies.name=nba&venue.city=${city}&datetime_utc.gt=${startDate}&client_id=${process.env.CLIENT_ID}`
 		);
 		const data = await response.json();
+
+		const dates = data.events.map((event: { datetime_local: any }) =>
+			new Date(event.datetime_local).toLocaleDateString()
+		);
+
+		setLabels(dates);
+
+		const lowest_prices = data.events.map(
+			(event: { stats: { lowest_price: any } }) => event.stats.lowest_price
+		);
+
+		setSampleData(lowest_prices);
+
+		const linksForGame = data.events.map((event: { url: any }) => event.url);
+
+		setSampleLinks(linksForGame);
+	};
+
+	const chartRef = useRef<ChartJS>(null);
+
+	const onClick = (event: MouseEvent<HTMLCanvasElement>) => {
+		if (chartRef.current) {
+			console.log(getElementAtEvent(chartRef.current, event)[0]);
+			const datasetIndexNum = getElementAtEvent(chartRef.current, event)[0]
+				.datasetIndex;
+			const dataPoint = getElementAtEvent(chartRef.current, event)[0].index;
+			window.open(dataOne.datasets[datasetIndexNum].links[dataPoint]), '_blank';
+		}
 	};
 
 	return (
@@ -65,12 +160,13 @@ export default function Home() {
 				</button>
 			</form>
 
-			{/* <div className="wrapper h-64 mx-auto">
-				<canvas id="myChart" className="text-5xl"></canvas>
-			</div> */}
+			<Bar options={options} data={dataOne} onClick={onClick} ref={chartRef} />
 		</>
 	);
 }
 // ! ADD CHART
+// ! ADD Links
+
+// ! ADD Highest Prices
 // ! ADD OTHER SPORTS
 // ! ADD OTHER CHARTS
