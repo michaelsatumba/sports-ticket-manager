@@ -18,7 +18,6 @@ export default function Home() {
 			`https://api.seatgeek.com/2/events?taxonomies.name=nba&venue.city=${city}&datetime_utc.gt=${startDate}&client_id=${CLIENT_ID}`
 		);
 		const data = await response.json();
-		console.log(data);
 	};
 
 	return (
