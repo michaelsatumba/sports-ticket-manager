@@ -38,7 +38,7 @@ ChartJS.register(
 const inter = Inter({ subsets: ['latin'] });
 
 export default function Home() {
-	const [city, setCity] = useState('');
+	const [city, setCity] = useState('la');
 	const [startDate, setStartDate] = useState('');
 	const [labels, setLabels] = useState([
 		'January',
@@ -53,9 +53,11 @@ export default function Home() {
 	const [sampleLinks, setSampleLinks] = useState([]);
 	const [sampleAverage, setSampleAverage] = useState([]);
 	const [sampleHighest, setSampleHighest] = useState([]);
+	const [sport, setSport] = useState('nba');
 
 	const [options, setOptions] = useState({
 		responsive: true,
+		maintainAspectRatio: true,
 		plugins: {
 			tooltip: {
 				enabled: true,
@@ -139,13 +141,14 @@ export default function Home() {
 		event.preventDefault();
 
 		const response = await fetch(
-			`https://api.seatgeek.com/2/events?taxonomies.name=nba&venue.city=${city}&datetime_utc.gt=${startDate}&client_id=${process.env.CLIENT_ID}`
+			`https://api.seatgeek.com/2/events?taxonomies.name=${sport}&venue.city=${city}&datetime_utc.gt=${startDate}&client_id=${process.env.CLIENT_ID}`
 		);
 		const data = await response.json();
 		const events = data.events;
 		console.log(events);
 		setOptions({
 			responsive: true,
+			maintainAspectRatio: false,
 			plugins: {
 				tooltip: {
 					enabled: true,
@@ -222,14 +225,12 @@ export default function Home() {
 			(event: { stats: { average_price: any } }) => event.stats.average_price
 		);
 
-		console.log(average_prices);
 		setSampleAverage(average_prices);
 
 		const highest_prices = data.events.map(
 			(event: { stats: { highest_price: any } }) => event.stats.highest_price
 		);
 
-		console.log(highest_prices);
 		setSampleHighest(highest_prices);
 
 		const linksForGame = data.events.map((event: { url: any }) => event.url);
@@ -261,29 +262,44 @@ export default function Home() {
 			</div>
 			<form
 				id="searchForm"
-				className="flex flex-col md:flex-row justify-between items-center my-6 mx-auto max-w-lg"
+				className="flex flex-col md:flex-row justify-between items-center my-6 mx-auto max-w-4xl"
 			>
-				<label htmlFor="city" className="font-bold text-lg mr-4">
-					City:
-				</label>
-				<input
-					type="text"
-					id="city"
-					className="p-2 border border-gray-400 rounded-lg shadow-md w-full md:w-2/3"
-					value={city}
-					onChange={(event) => setCity(event.target.value)}
-				/>
-
-				<label htmlFor="startDate" className="font-bold text-lg mr-4">
-					From:
-				</label>
-				<input
-					type="date"
-					id="startDate"
-					className="p-2 border border-gray-400 rounded-lg shadow-md w-full md:w-2/3"
-					value={startDate}
-					onChange={(event) => setStartDate(event.target.value)}
-				/>
+				<div>
+					<label htmlFor="city" className="font-bold text-lg mr-4">
+						Sport:
+					</label>
+					<input
+						type="text"
+						id="city"
+						className="p-2 border border-gray-400 rounded-lg shadow-md w-full md:w-2/3"
+						value={sport}
+						onChange={(event) => setSport(event.target.value)}
+					/>
+				</div>
+				<div>
+					<label htmlFor="city" className="font-bold text-lg mr-4">
+						City:
+					</label>
+					<input
+						type="text"
+						id="city"
+						className="p-2 border border-gray-400 rounded-lg shadow-md w-full md:w-2/3"
+						value={city}
+						onChange={(event) => setCity(event.target.value)}
+					/>
+				</div>
+				<div>
+					<label htmlFor="startDate" className="font-bold text-lg mr-4">
+						From:
+					</label>
+					<input
+						type="date"
+						id="startDate"
+						className="p-2 border border-gray-400 rounded-lg shadow-md w-full md:w-2/3"
+						value={startDate}
+						onChange={(event) => setStartDate(event.target.value)}
+					/>
+				</div>
 				<button
 					type="submit"
 					className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
@@ -293,7 +309,14 @@ export default function Home() {
 				</button>
 			</form>
 
-			<Bar options={options} data={dataOne} onClick={onClick} ref={chartRef} />
+			<div className="">
+				<Bar
+					options={options}
+					data={dataOne}
+					onClick={onClick}
+					ref={chartRef}
+				/>
+			</div>
 		</>
 	);
 }
@@ -301,6 +324,7 @@ export default function Home() {
 // ? ADD Links
 // ? ADD Titles
 // ? ADD Highest Prices
+// ? ADD OTHER SPORTS
 
-// ! ADD OTHER SPORTS
+// ! Make it responsive
 // ! ADD OTHER CHARTS
