@@ -18,6 +18,7 @@ import {
 	Tooltip,
 	Legend,
 	InteractionItem,
+	TooltipItem,
 } from 'chart.js';
 import {
 	Bar,
@@ -62,9 +63,9 @@ export default function Home() {
 			tooltip: {
 				enabled: true,
 				callbacks: {
-					label: function (tooltipItem: { dataIndex: number }, data: any) {
-						return '$';
-					} as (tooltipItem: { dataIndex: number }, data: any) => string,
+					label: function (tooltipItem: { dataIndex: any }) {
+						return;
+					},
 				},
 				titleFont: {
 					size: 20,
@@ -153,16 +154,14 @@ export default function Home() {
 				tooltip: {
 					enabled: true,
 					callbacks: {
-						label: function (tooltipItem: { dataIndex: number }, data: any) {
-							if (tooltipItem.dataIndex !== undefined) {
-								return (
-									events[tooltipItem.dataIndex].short_title +
-									' $' +
-									events[tooltipItem.dataIndex].stats.lowest_price
-								);
-							}
-							return '';
-						} as (tooltipItem: { dataIndex: number }, data: any) => string,
+						label: function (tooltipItem: { dataIndex: any }) {
+							return (
+								'$' +
+								events[tooltipItem.dataIndex].stats.lowest_price +
+								' - ' +
+								events[tooltipItem.dataIndex].short_title
+							);
+						},
 					},
 					titleFont: {
 						size: 30,
