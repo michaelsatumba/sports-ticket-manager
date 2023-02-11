@@ -58,7 +58,7 @@ export default function Home() {
 
 	const [options, setOptions] = useState({
 		responsive: true,
-		maintainAspectRatio: true,
+		maintainAspectRatio: false,
 		plugins: {
 			tooltip: {
 				enabled: true,
@@ -92,6 +92,9 @@ export default function Home() {
 		},
 		scales: {
 			x: {
+				grid: {
+					display: false,
+				},
 				ticks: {
 					font: {
 						size: 40,
@@ -99,6 +102,10 @@ export default function Home() {
 				},
 			},
 			y: {
+				stacked: true,
+				grid: {
+					display: true,
+				},
 				ticks: {
 					font: {
 						size: 20,
@@ -189,6 +196,9 @@ export default function Home() {
 			},
 			scales: {
 				x: {
+					grid: {
+						display: false,
+					},
 					ticks: {
 						font: {
 							size: 20,
@@ -196,6 +206,10 @@ export default function Home() {
 					},
 				},
 				y: {
+					stacked: true,
+					grid: {
+						display: true,
+					},
 					ticks: {
 						font: {
 							size: 20,
@@ -250,65 +264,75 @@ export default function Home() {
 
 	return (
 		<>
-			<div className="flex justify-between items-center p-6 bg-black text-white">
-				<Link href="/">
-					<img src="/images/NBA_logo.webp" alt="" className="h-12" />
-				</Link>
+			<div>
+				<div className="flex justify-between items-center p-6 bg-black text-white">
+					<Link href="/">
+						<img src="/images/NBA_logo.webp" alt="" className="h-12" />
+					</Link>
 
-				<p className="text-2xl font-bold">Sports Ticket Manager</p>
+					<p className="text-2xl font-bold">Sports Ticket Manager</p>
 
-				<img src="/images/0x0.webp" alt="" className="h-12" />
-			</div>
-			<form
-				id="searchForm"
-				className="flex flex-col md:flex-row justify-between items-center my-6 mx-auto max-w-4xl"
-			>
-				<div>
-					<label htmlFor="city" className="font-bold text-lg mr-4">
-						Sport:
-					</label>
-					<input
-						type="text"
-						id="city"
-						className="p-2 border border-gray-400 rounded-lg shadow-md w-full md:w-2/3"
-						value={sport}
-						onChange={(event) => setSport(event.target.value)}
-					/>
+					<img src="/images/0x0.webp" alt="" className="h-12" />
 				</div>
-				<div>
-					<label htmlFor="city" className="font-bold text-lg mr-4">
-						City:
-					</label>
-					<input
-						type="text"
-						id="city"
-						className="p-2 border border-gray-400 rounded-lg shadow-md w-full md:w-2/3"
-						value={city}
-						onChange={(event) => setCity(event.target.value)}
-					/>
-				</div>
-				<div>
-					<label htmlFor="startDate" className="font-bold text-lg mr-4">
-						From:
-					</label>
-					<input
-						type="date"
-						id="startDate"
-						className="p-2 border border-gray-400 rounded-lg shadow-md w-full md:w-2/3"
-						value={startDate}
-						onChange={(event) => setStartDate(event.target.value)}
-					/>
-				</div>
-				<button
-					type="submit"
-					className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
-					onClick={handleSubmit}
+				<form
+					id="searchForm"
+					className="flex flex-col md:flex-row justify-between items-center my-6 mx-auto max-w-4xl"
 				>
-					Get Events
-				</button>
-			</form>
+					<div>
+						<label htmlFor="city" className="font-bold text-lg mr-4">
+							Sport:
+						</label>
+						<input
+							type="text"
+							id="city"
+							className="p-2 border border-gray-400 rounded-lg shadow-md w-full md:w-2/3"
+							value={sport}
+							onChange={(event) => setSport(event.target.value)}
+						/>
+					</div>
+					<div>
+						<label htmlFor="city" className="font-bold text-lg mr-4">
+							City:
+						</label>
+						<input
+							type="text"
+							id="city"
+							className="p-2 border border-gray-400 rounded-lg shadow-md w-full md:w-2/3"
+							value={city}
+							onChange={(event) => setCity(event.target.value)}
+						/>
+					</div>
+					<div>
+						<label htmlFor="startDate" className="font-bold text-lg mr-4">
+							From:
+						</label>
+						<input
+							type="date"
+							id="startDate"
+							className="p-2 border border-gray-400 rounded-lg shadow-md w-full md:w-2/3"
+							value={startDate}
+							onChange={(event) => setStartDate(event.target.value)}
+						/>
+					</div>
+					<button
+						type="submit"
+						className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
+						onClick={handleSubmit}
+					>
+						Get Events
+					</button>
+				</form>
 
-			<Bar options={options} data={dataOne} onClick={onClick} ref={chartRef} />
+				<div className="bg-red-500 mx-auto relative">
+					<Bar
+						className="bg-black border-dotted border-4 border-blue-500 w-full h-96"
+						options={options}
+						data={dataOne}
+						onClick={onClick}
+						ref={chartRef}
+					/>
+				</div>
+			</div>
 		</>
 	);
 }
