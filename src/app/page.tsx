@@ -2,13 +2,7 @@
 import Image from 'next/image';
 import { Inter } from '@next/font/google';
 import Link from 'next/link';
-import {
-	useEffect,
-	useRef,
-	useState,
-	MouseEvent,
-	MouseEventHandler,
-} from 'react';
+import { useRef, useState, MouseEvent } from 'react';
 import {
 	Chart as ChartJS,
 	CategoryScale,
@@ -17,18 +11,10 @@ import {
 	Title,
 	Tooltip,
 	Legend,
-	InteractionItem,
-	TooltipItem,
 	PointElement,
 	LineElement,
 } from 'chart.js';
-import {
-	Bar,
-	getDatasetAtEvent,
-	getElementAtEvent,
-	getElementsAtEvent,
-	Line,
-} from 'react-chartjs-2';
+import { Bar, getElementAtEvent, Line } from 'react-chartjs-2';
 
 ChartJS.register(
 	CategoryScale,
@@ -53,7 +39,6 @@ export default function Home() {
 		'March',
 		'April',
 		'May',
-		'June',
 		'July',
 	]);
 	const [sampleData, setSampleData] = useState([]);
@@ -90,7 +75,16 @@ export default function Home() {
 			},
 			title: {
 				display: true,
-				text: 'NBA Games in ' + city + ' on or after ' + startDate,
+				text:
+					sport +
+					' games in ' +
+					city +
+					' on or after ' +
+					new Date(startDate.replace('-', '/')).toLocaleDateString('en-US', {
+						month: '2-digit',
+						day: '2-digit',
+						year: 'numeric',
+					}),
 				font: {
 					size: 20,
 				},
@@ -202,7 +196,16 @@ export default function Home() {
 				},
 				title: {
 					display: true,
-					text: sport + ' games in ' + city + ' on or after ' + startDate,
+					text:
+						sport +
+						' games in ' +
+						city +
+						' on or after ' +
+						new Date(startDate.replace('-', '/')).toLocaleDateString('en-US', {
+							month: '2-digit',
+							day: '2-digit',
+							year: 'numeric',
+						}),
 					font: {
 						size: 20,
 					},
@@ -283,12 +286,11 @@ export default function Home() {
 			window.open(dataOne.datasets[datasetIndexNum].links[dataPoint]), '_blank';
 		}
 	};
-
 	return (
 		<>
 			<div className="flex flex-col h-screen">
 				<div className="flex justify-between items-center p-6 bg-black text-white">
-					<div className="h-12 ">
+					<div className="h-12">
 						<Link href="/">
 							<Image
 								src="/espn_logo_download.webp"
@@ -308,7 +310,7 @@ export default function Home() {
 					</div>
 				</div>
 				<form
-					id="searchForm"
+					id="searchForm" // maybe get rid of this
 					className="flex flex-col md:flex-row justify-between items-center bg-black text-white"
 				>
 					<div className="flex flex-col md:flex-row items-center">
@@ -379,5 +381,5 @@ export default function Home() {
 // ? ADD OTHER SPORTS
 // ? Make it responsive
 
-// ! How to make it fit on one page?
+// ! Date
 // ! ADD OTHER CHARTS
