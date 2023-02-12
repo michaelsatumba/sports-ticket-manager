@@ -264,19 +264,30 @@ export default function Home() {
 
 	return (
 		<>
-			<div>
+			<div className="flex flex-col h-screen">
 				<div className="flex justify-between items-center p-6 bg-black text-white">
-					<Link href="/">
-						<img src="/images/NBA_logo.webp" alt="" className="h-12" />
-					</Link>
+					<div className="h-12 ">
+						<Link href="/">
+							<Image
+								src="/espn_logo_download.webp"
+								alt="ESPN"
+								width={60}
+								height={60}
+							/>
+						</Link>
+					</div>
 
 					<p className="text-2xl font-bold">Sports Ticket Manager</p>
 
-					<img src="/images/0x0.webp" alt="" className="h-12" />
+					<div className="h-12 ">
+						<Link href="https://seatgeek.com/">
+							<Image src="/0x0.webp" alt="SEATGEEK" width={50} height={50} />
+						</Link>
+					</div>
 				</div>
 				<form
 					id="searchForm"
-					className="flex flex-col md:flex-row justify-between items-center my-6 mx-auto max-w-4xl"
+					className="flex flex-col md:flex-row justify-between items-center  bg-black"
 				>
 					<div>
 						<label htmlFor="city" className="font-bold text-lg mr-4">
@@ -316,16 +327,16 @@ export default function Home() {
 					</div>
 					<button
 						type="submit"
-						className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
+						className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded m-1"
 						onClick={handleSubmit}
 					>
 						Get Events
 					</button>
 				</form>
 
-				<div className="bg-red-500 mx-auto relative">
+				<div className="bg-red-500 flex flex-grow">
 					<Bar
-						className="bg-black border-dotted border-4 border-blue-500 w-full h-96"
+						className="bg-black w-full"
 						options={options}
 						data={dataOne}
 						onClick={onClick}
