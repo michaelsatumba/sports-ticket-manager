@@ -40,7 +40,8 @@ const inter = Inter({ subsets: ['latin'] });
 
 export default function Home() {
 	const [city, setCity] = useState('la');
-	const [startDate, setStartDate] = useState('');
+	const today = new Date().toISOString().substring(0, 10);
+	const [startDate, setStartDate] = useState(today);
 	const [labels, setLabels] = useState([
 		'January',
 		'February',
@@ -188,7 +189,7 @@ export default function Home() {
 				},
 				title: {
 					display: true,
-					text: 'NBA Games in ' + city + ' on or after ' + startDate,
+					text: sport + ' games in ' + city + ' on or after ' + startDate,
 					font: {
 						size: 20,
 					},
@@ -296,7 +297,7 @@ export default function Home() {
 						<input
 							type="text"
 							id="city"
-							className="p-2 border border-gray-400 rounded-lg shadow-md w-full md:w-2/3"
+							className="p-2 border border-gray-400 rounded-lg shadow-md w-full md:w-2/3 text-black"
 							value={sport}
 							onChange={(event) => setSport(event.target.value)}
 						/>
@@ -308,7 +309,7 @@ export default function Home() {
 						<input
 							type="text"
 							id="city"
-							className="p-2 border border-gray-400 rounded-lg shadow-md w-full md:w-2/3"
+							className="p-2 border border-gray-400 rounded-lg shadow-md w-full md:w-2/3 text-black"
 							value={city}
 							onChange={(event) => setCity(event.target.value)}
 						/>
@@ -320,7 +321,7 @@ export default function Home() {
 						<input
 							type="date"
 							id="startDate"
-							className="p-2 border border-gray-400 rounded-lg shadow-md w-full md:w-2/3"
+							className="p-2 border border-gray-400 rounded-lg shadow-md w-full md:w-2/3 text-black"
 							value={startDate}
 							onChange={(event) => setStartDate(event.target.value)}
 						/>
