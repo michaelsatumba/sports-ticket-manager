@@ -19,18 +19,23 @@ import {
 	Legend,
 	InteractionItem,
 	TooltipItem,
+	PointElement,
+	LineElement,
 } from 'chart.js';
 import {
 	Bar,
 	getDatasetAtEvent,
 	getElementAtEvent,
 	getElementsAtEvent,
+	Line,
 } from 'react-chartjs-2';
 
 ChartJS.register(
 	CategoryScale,
 	LinearScale,
 	BarElement,
+	PointElement,
+	LineElement,
 	Title,
 	Tooltip,
 	Legend
@@ -115,6 +120,14 @@ export default function Home() {
 						return '$' + value;
 					},
 				},
+			},
+		},
+		elements: {
+			line: {
+				borderColor: 'red',
+			},
+			point: {
+				radius: 10,
 			},
 		},
 	});
@@ -219,6 +232,14 @@ export default function Home() {
 							return '$' + value;
 						},
 					},
+				},
+			},
+			elements: {
+				line: {
+					borderColor: 'white',
+				},
+				point: {
+					radius: 10,
 				},
 			},
 		});
@@ -344,6 +365,9 @@ export default function Home() {
 						ref={chartRef}
 					/>
 				</div>
+			</div>
+			<div className="bg-black h-screen">
+				<Line options={options} data={dataOne} />
 			</div>
 		</>
 	);
