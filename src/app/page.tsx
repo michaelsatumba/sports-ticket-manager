@@ -287,9 +287,9 @@ export default function Home() {
 				</div>
 				<form
 					id="searchForm"
-					className="flex flex-col md:flex-row justify-between items-center  bg-black"
+					className="flex flex-col md:flex-row justify-between items-center bg-black text-white"
 				>
-					<div>
+					<div className="flex flex-col md:flex-row items-center">
 						<label htmlFor="city" className="font-bold text-lg mr-4">
 							Sport:
 						</label>
@@ -301,7 +301,7 @@ export default function Home() {
 							onChange={(event) => setSport(event.target.value)}
 						/>
 					</div>
-					<div>
+					<div className="flex flex-col md:flex-row items-center">
 						<label htmlFor="city" className="font-bold text-lg mr-4">
 							City:
 						</label>
@@ -313,7 +313,7 @@ export default function Home() {
 							onChange={(event) => setCity(event.target.value)}
 						/>
 					</div>
-					<div>
+					<div className="flex flex-col md:flex-row items-center">
 						<label htmlFor="startDate" className="font-bold text-lg mr-4">
 							From:
 						</label>
@@ -334,9 +334,9 @@ export default function Home() {
 					</button>
 				</form>
 
-				<div className="bg-red-500 flex flex-grow">
+				<div className="flex flex-grow">
 					<Bar
-						className="bg-black w-full"
+						className="bg-black "
 						options={options}
 						data={dataOne}
 						onClick={onClick}
@@ -352,6 +352,7 @@ export default function Home() {
 // ? ADD Titles
 // ? ADD Highest Prices
 // ? ADD OTHER SPORTS
+// ? Make it responsive
 
-// ! Make it responsive
+// ! How to make it fit on one page?
 // ! ADD OTHER CHARTS
